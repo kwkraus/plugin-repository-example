@@ -8,5 +8,12 @@
     "description": "Marketplace for plugins I use for my demos",
     "version": "1.0.0"
   },
-  "plugins": []
+  "plugins": [
+    {
+      "name": "react-ts-unittest-expert",
+      "description": "A specialized agent for generating unit tests for React and TypeScript components",
+      "version": "1.0.0",
+      "source": "./plugins/react-ts-unittest-expert"
+    }
+  ]
 }

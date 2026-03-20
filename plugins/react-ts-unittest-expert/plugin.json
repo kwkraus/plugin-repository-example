@@ -1,0 +1,12 @@
+{
+  "name": "react-ts-unittest-expert",
+  "description": "A specialized agent for generating unit tests for React and TypeScript components",
+  "version": "1.0.0",
+  "author": {
+    "name": "Kevin Kraus",
+    "email": "kevin.kraus@microsoft.com"
+  },
+  "license": "MIT",
+  "keywords": ["react", "typescript", "testing", "unit-tests", "jest", "vitest"],
+  "agents": "agents/"
+}
