@@ -1,0 +1,12 @@
+{
+  "name": "plugin-marketplace-example",
+  "owner": {
+    "name": "Kevin Kraus",
+    "email": "kevin.kraus@microsoft.com"
+  },
+  "metadata": {
+    "description": "Marketplace for plugins I use for my demos",
+    "version": "1.0.0"
+  },
+  "plugins": []
+}
