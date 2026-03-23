@@ -14,6 +14,12 @@
       "description": "A specialized agent for generating unit tests for React and TypeScript components",
       "version": "1.0.0",
       "source": "./plugins/react-ts-unittest-expert"
+    },
+    {
+      "name": "expressapi-unittest-expert",
+      "description": "A specialized agent for generating unit tests for Express API components",
+      "version": "1.0.0",
+      "source": "./plugins/expressapi-unittest-expert"
     }
   ]
 }
