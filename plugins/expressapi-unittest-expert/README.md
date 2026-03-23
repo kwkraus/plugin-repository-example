@@ -15,6 +15,7 @@ The agent supports two working modes:
 
 - **Express API test generation** for routes, middleware, and service logic
 - **Jest and supertest guidance** for request/response-level tests
+- **Prescriptive mocking guidance** centered on Jest built-in mocks and spies
 - **Retrofit testability assessment** for existing code with recommendations for safer refactoring
 - **Coverage-oriented workflows** including edge cases, error paths, and invalid input handling
 - **External dependency mocking patterns** for databases and other infrastructure dependencies
@@ -81,15 +82,28 @@ The agent is designed to help with:
 
 - Route handler tests using Express and supertest
 - Middleware tests with mocked `req`, `res`, and `next`
+- Module-boundary mocking with `jest.mock()`, `jest.fn()`, and `jest.spyOn()`
 - Multi-query request flows such as create-and-fetch operations
 - Header-driven behaviors such as auth or actor context handling
 - Error responses including `400`, `404`, and server failures
 - Mocking database access instead of mocking the router itself
 
+## Mocking Recommendation
+
+The default mocking approach for this plugin is:
+
+- Use **Jest built-in mocks** for services, repositories, adapters, queues, file system access, and other external boundaries.
+- Use **supertest** for inbound HTTP requests to the Express app.
+- Use **Nock** only when the API under test makes outbound HTTP requests directly to third-party services and there is no project wrapper module to mock instead.
+
+This keeps the guidance simple and avoids forcing every consuming project to adopt an extra mocking framework when Jest already covers most Express API testing needs.
+
 ## Recommended Stack
 
 - **Framework**: Jest
 - **HTTP testing**: supertest
+- **Mocking**: Jest built-in mocks (`jest.mock`, `jest.fn`, `jest.spyOn`)
+- **Optional outbound HTTP mocking**: Nock
 - **Runtime style**: Match the target project's existing module system
 - **API framework**: Express
 - **Data layer**: Mock external I/O dependencies at the module boundary

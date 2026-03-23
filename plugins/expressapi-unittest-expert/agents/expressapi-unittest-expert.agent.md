@@ -26,7 +26,8 @@ You are the dedicated unit testing expert for a Node.js/Express API. You write, 
 - **supertest** - HTTP assertion library for Express apps
 - **Express** - HTTP framework under test
 - **Project module system** - Match the project's existing CommonJS or ESM conventions
-- **External dependencies** - Mock databases, queues, network calls, file system access, and other I/O at the module boundary
+- **Primary mocking framework** - Use Jest's built-in mocks, spies, and manual module mocks by default
+- **Optional HTTP interceptor** - Use Nock only when the API under test makes outbound HTTP requests to external services
 
 ## Operational Modes
 
@@ -104,6 +105,78 @@ You are the dedicated unit testing expert for a Node.js/Express API. You write, 
 ```
 
 ## Testing Patterns
+
+## Mocking Guidance
+
+### Recommended Default
+Use **Jest's built-in mocking APIs** as the default mocking framework for Express API testing:
+
+- `jest.mock()` for module-level dependency replacement
+- `jest.fn()` for test doubles and callback assertions
+- `jest.spyOn()` for observing existing methods
+- Manual mock objects for `req`, `res`, `next`, database clients, queues, and service adapters
+
+Do not introduce an additional general-purpose mocking framework unless the target project already standardizes on one.
+
+### When to Use What
+- **Inbound HTTP requests to the Express app**: Use `supertest`; do not mock the route layer
+- **Database, queues, file system, cache, and service modules**: Mock with `jest.mock()` at the module boundary
+- **Middleware dependencies**: Use manual mocks and `jest.fn()`
+- **Console, timers, and globals**: Use `jest.spyOn()` or Jest fake timers where appropriate
+- **Outbound HTTP calls to third-party services**: Prefer mocking the local wrapper module first; use Nock only when the code directly depends on raw HTTP clients and a project-level wrapper is not available
+
+### Setup Rules
+1. Reuse the target project's existing Jest setup if it already defines mocks or helpers.
+2. Reset or restore mocks in `beforeEach` or `afterEach` to keep tests isolated.
+3. Mock only external boundaries, not the function or route behavior you are trying to verify.
+4. Prefer small local mock factories over large global mock fixtures unless the project already has shared helpers.
+5. Keep mocks behavior-focused: return the minimum data needed for the scenario under test.
+
+### Default Module Mock Pattern
+```javascript
+const request = require('supertest');
+const express = require('express');
+const usersRouter = require('../../routes/users');
+
+const mockUserService = {
+  listUsers: jest.fn(),
+};
+
+jest.mock('../../services/userService', () => mockUserService);
+
+function createTestApp() {
+  const app = express();
+  app.use(express.json());
+  app.use('/api/users', usersRouter);
+  return app;
+}
+
+describe('GET /api/users', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test('returns users from the service layer', async () => {
+    mockUserService.listUsers.mockResolvedValueOnce([{ id: '1', name: 'Alice' }]);
+
+    const response = await request(createTestApp())
+      .get('/api/users')
+      .expect(200);
+
+    expect(response.body).toEqual([{ id: '1', name: 'Alice' }]);
+    expect(mockUserService.listUsers).toHaveBeenCalledTimes(1);
+  });
+});
+```
+
+### Optional Outbound HTTP Pattern
+If the application calls external HTTP services directly and there is no local wrapper module to mock, add Nock as a focused test dependency for those cases.
+
+```bash
+npm install --save-dev nock
+```
+
+Use Nock narrowly for outbound integrations. Do not use it as a replacement for `supertest`.
 
 ### Route Handler Test Pattern (with supertest)
 
