@@ -1,5 +1,5 @@
 ---
-name: react-ts-unit-test-engineer
+name: React/TypeScript Unit Test Engineer
 description: React/TypeScript frontend unit testing expert using Vitest and React Testing Library. Supports TDD Greenfield and Retrofit modes.
 ---
 

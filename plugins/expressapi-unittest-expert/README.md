@@ -1,10 +1,10 @@
 # expressapi-unittest-expert
 
-A GitHub Copilot CLI plugin that provides the `api-unit-test-engineer` custom agent for writing and improving unit tests for Node.js and Express APIs.
+A GitHub Copilot CLI plugin that provides the `expressapi-unittest-engineer` custom agent for writing and improving unit tests for Node.js and Express APIs.
 
 ## Overview
 
-The `expressapi-unittest-expert` plugin is focused on backend API testing with Jest and supertest. The bundled `api-unit-test-engineer` agent helps teams add coverage for Express routes, middleware, and services while following CommonJS patterns and practical HTTP-level testing practices.
+The `expressapi-unittest-expert` plugin is focused on backend API testing with Jest and supertest. The bundled `expressapi-unittest-engineer` agent helps teams add coverage for Express routes, middleware, and services while following CommonJS patterns and practical HTTP-level testing practices.
 
 The agent supports two working modes:
 
@@ -41,7 +41,7 @@ copilot plugin install expressapi-unittest-expert@plugin-marketplace-example
 In a Copilot CLI interactive session, invoke the bundled agent:
 
 ```text
-/agent api-unit-test-engineer
+/agent expressapi-unittest-engineer
 ```
 
 Example requests:

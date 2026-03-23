@@ -17,7 +17,7 @@
     },
     {
       "name": "expressapi-unittest-expert",
-      "description": "A specialized agent for generating unit tests for Express API components",
+      "description": "A specialized agent for generating unit tests for Express API endpoints",
       "version": "1.0.0",
       "source": "./plugins/expressapi-unittest-expert"
     }

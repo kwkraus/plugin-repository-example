@@ -8,5 +8,5 @@
   },
   "license": "MIT",
   "keywords": ["react", "typescript", "testing", "unit-tests", "jest", "vitest"],
-  "agents": "agents/"
+  "agents": "./agents"
 }

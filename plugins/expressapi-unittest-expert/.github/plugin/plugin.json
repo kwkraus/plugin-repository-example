@@ -8,5 +8,5 @@
   },
   "license": "MIT",
   "keywords": ["express", "api", "testing", "unit-tests", "jest", "supertest"],
-  "agents": "agents/"
+  "agents": "./agents"
 }
