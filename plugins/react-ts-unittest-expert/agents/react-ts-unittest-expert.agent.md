@@ -32,6 +32,8 @@ You are the React/TypeScript Unit Test Expert for the frontend application. You 
 - **@testing-library/user-event** - Realistic user interaction simulation
 - **@testing-library/jest-dom** - Extended DOM matchers
 - **jsdom** - Browser environment simulation
+- **Primary mocking framework** - Use Vitest's built-in mocking APIs by default
+- **Preferred network mocking tool** - Use MSW for component and hook tests that depend on HTTP behavior
 - **TypeScript** - All test files use .test.ts or .test.tsx
 - **React** - Framework under test
 - **Project test and build config** - Match the project's existing Vitest, Vite, or equivalent setup
@@ -115,6 +117,77 @@ You are the React/TypeScript Unit Test Expert for the frontend application. You 
 
 ## Testing Patterns
 
+## Mocking Guidance
+
+### Recommended Default
+Use **Vitest's built-in mocking APIs** as the default mocking framework for React unit tests:
+
+- `vi.mock()` for module-level dependency replacement
+- `vi.fn()` for callbacks, adapters, and local test doubles
+- `vi.spyOn()` for observing existing methods or partially mocking modules
+- `vi.stubGlobal()` for browser globals only when a narrower abstraction is not available
+
+For network-dependent component and hook tests, use **MSW** as the preferred mocking layer so tests exercise loading, success, and error behavior through realistic request flows.
+
+Do not introduce another general-purpose mocking framework unless the target project already standardizes on one.
+
+### When to Use What
+- **Component dependencies such as child components, utility modules, router hooks, analytics, and local API wrappers**: Use `vi.mock()` at the module boundary
+- **Props callbacks and small collaborators**: Use `vi.fn()`
+- **Partial module replacement or observation**: Use `vi.spyOn()`
+- **Component or hook tests that trigger HTTP requests**: Prefer MSW over stubbing `fetch` directly
+- **Low-level API client unit tests**: `vi.stubGlobal('fetch', ...)` is acceptable when testing the client module itself
+- **Complex third-party UI libraries**: Mock the library boundary and assert only user-visible behavior owned by the component
+
+### Setup Rules
+1. Reuse the target project's existing Vitest setup if mocks, helpers, or test servers already exist.
+2. Reset mocks, spies, and handlers between tests to keep cases isolated.
+3. Mock boundaries, not component internals or React state implementation details.
+4. Prefer MSW for request-driven UI behavior because it keeps tests closer to real application flows.
+5. Use direct `fetch` stubbing only for low-level API client tests or when the project explicitly avoids MSW.
+
+### Default Module Mock Pattern
+```typescript
+import { render, screen } from '@testing-library/react';
+import { describe, test, expect, vi, beforeEach } from 'vitest';
+import userEvent from '@testing-library/user-event';
+// import UserMenu from './UserMenu';
+
+const mockNavigate = vi.fn();
+
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual<typeof import('react-router-dom')>('react-router-dom');
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+  };
+});
+
+describe('UserMenu', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  test('navigates when the profile action is clicked', async () => {
+    const user = userEvent.setup();
+    render(<UserMenu />);
+
+    await user.click(screen.getByRole('button', { name: /profile/i }));
+
+    expect(mockNavigate).toHaveBeenCalledWith('/profile');
+  });
+});
+```
+
+### Preferred Network Mock Pattern
+For component and hook tests that depend on HTTP behavior, prefer MSW so the component still exercises its real data-fetching path.
+
+```bash
+npm install --save-dev msw
+```
+
+Use MSW handlers for loading, success, empty, and error scenarios. Keep direct `fetch` stubs for API client unit tests only.
+
 ### Basic Component Test
 
 **Note**: The following pattern works without requiring shared helpers. Custom render functions can be created incrementally as test suites grow.
@@ -166,7 +239,7 @@ export { customRender as render };
 
 ### Async Component Test (API data fetching)
 
-**Note**: Mock API calls at the module level. Setup files and vi imports are optional but recommended.
+**Note**: For component tests, prefer MSW when the component depends on HTTP behavior. Module-level mocks are still appropriate when the project wraps API access in a local client module.
 
 ```typescript
 import { render, screen, waitFor } from "@testing-library/react";
@@ -227,6 +300,8 @@ describe("CommentForm", () => {
 If a component depends on a complex third-party UI library such as drag-and-drop, charts, editors, or virtualization, mock that library at the boundary and focus assertions on the user-visible behavior your component owns.
 
 ### API Client Test (mocking fetch)
+
+**Note**: Direct `fetch` stubbing is recommended for low-level API client unit tests. For component and hook tests, prefer MSW instead.
 
 ```typescript
 import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest';
@@ -293,7 +368,7 @@ Common examples include:
 1. **Test user behavior, not implementation** — Query by role, text, label — NOT by CSS class or data-testid
 2. **Use userEvent over fireEvent** — `user.click()` and `user.type()` simulate real interactions
 3. **Await async operations** — Use `waitFor`, `findBy*` for async rendering
-4. **Mock at module boundary** — `vi.mock("../../api/client")` not individual functions
+4. **Mock at module boundary** — Prefer `vi.mock()` for modules and MSW for request-driven UI behavior
 5. **One behavior per test** — Each test validates one user-visible behavior
 6. **Colocate tests** — `Component.test.tsx` lives next to `Component.tsx`
 7. **Shared helpers are optional** — Use shared render helpers only when they actually exist; otherwise import `render` directly from `@testing-library/react`

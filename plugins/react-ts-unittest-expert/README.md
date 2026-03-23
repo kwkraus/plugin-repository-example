@@ -19,6 +19,7 @@ The `react-ts-unittest-expert` agent is designed to help developers create compr
   - Async operations and loading states
 - **Best Practices**: Generates tests following React Testing Library best practices and user-centric testing patterns
 - **Project-Aware Guidance**: Adapts to the target project's existing test setup, helpers, and coverage policy
+- **Prescriptive Mocking Guidance**: Recommends Vitest mocks by default and MSW for request-driven UI tests
 - **Expert Guidance**: Provides recommendations for test structure, improvements, and testability concerns
 
 ## Installation
@@ -73,12 +74,23 @@ The agent specializes in:
 - **Async Testing**: Promises, async/await, API mocking, loading states
 - **TypeScript**: Type-safe tests, generic component testing
 
+## Mocking Recommendation
+
+The default mocking approach for this plugin is:
+
+- Use **Vitest built-in mocks** such as `vi.mock()`, `vi.fn()`, and `vi.spyOn()` for module boundaries, callbacks, utilities, router hooks, browser APIs, and third-party libraries.
+- Use **MSW** for component and hook tests that depend on HTTP behavior so the UI exercises realistic request flows.
+- Use direct `fetch` stubbing only for low-level API client unit tests or when the target project explicitly avoids MSW.
+
+This keeps React tests aligned with Vitest while avoiding brittle UI tests that over-mock network behavior.
+
 ## Recommended Testing Tools
 
 - **Framework**: Vitest
 - **Testing Library**: @testing-library/react
 - **User Events**: @testing-library/user-event
-- **Mocking**: vi.mock() or MSW (Mock Service Worker)
+- **Mocking**: Vitest built-in mocks (`vi.mock`, `vi.fn`, `vi.spyOn`)
+- **Preferred network mocking**: MSW (Mock Service Worker)
 - **Async Testing**: waitFor, findBy queries, act()
 
 ## Best Practices Followed
@@ -90,6 +102,7 @@ The agent specializes in:
 - **DRY Principle**: Shared test utilities and fixtures to reduce duplication
 - **Performance**: Tests are written to be fast and reliable (avoid flakiness)
 - **Project Alignment**: Follow the target project's existing scripts, file layout, and coverage policy
+- **Mocking Discipline**: Mock boundaries and network behavior deliberately instead of mocking component internals
 
 ## Requirements
 
