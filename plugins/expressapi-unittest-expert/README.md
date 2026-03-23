@@ -17,8 +17,8 @@ The agent supports two working modes:
 - **Jest and supertest guidance** for request/response-level tests
 - **Retrofit testability assessment** for existing code with recommendations for safer refactoring
 - **Coverage-oriented workflows** including edge cases, error paths, and invalid input handling
-- **Database mocking patterns** for projects using `pg` or similar infrastructure dependencies
-- **CommonJS-first conventions** for codebases that use `require()` and `module.exports`
+- **External dependency mocking patterns** for databases and other infrastructure dependencies
+- **Project-aware conventions** that adapt to the target codebase's module system and test structure
 
 ## Installation
 
@@ -82,7 +82,7 @@ The agent is designed to help with:
 - Route handler tests using Express and supertest
 - Middleware tests with mocked `req`, `res`, and `next`
 - Multi-query request flows such as create-and-fetch operations
-- Header-driven behaviors such as `X-User-Id` request handling
+- Header-driven behaviors such as auth or actor context handling
 - Error responses including `400`, `404`, and server failures
 - Mocking database access instead of mocking the router itself
 
@@ -90,9 +90,9 @@ The agent is designed to help with:
 
 - **Framework**: Jest
 - **HTTP testing**: supertest
-- **Runtime style**: CommonJS
+- **Runtime style**: Match the target project's existing module system
 - **API framework**: Express
-- **Data layer**: Mock `pg` or other external I/O dependencies
+- **Data layer**: Mock external I/O dependencies at the module boundary
 
 ## Prerequisites
 
@@ -100,8 +100,8 @@ Before using the agent effectively, your API project should have:
 
 - GitHub Copilot CLI installed and configured
 - A Node.js and Express codebase
-- Jest installed as a dev dependency
-- supertest installed as a dev dependency
+- Jest installed or selected as the test runner for the project
+- supertest installed when HTTP-level route testing is needed
 - A testable app entry point such as `createApp()` that does not auto-start the server during tests
 
 Example setup:
@@ -128,6 +128,7 @@ Typical package scripts:
 - Use descriptive test names tied to observable API behavior
 - Prefer HTTP-level coverage for routes instead of mocking the route layer
 - Add characterization tests before changing hard-to-test legacy code
+- Follow the target project's existing scripts, test layout, and coverage policy
 
 ## Support
 

@@ -4,7 +4,7 @@ A specialized GitHub Copilot CLI agent for generating high-quality unit tests fo
 
 ## Overview
 
-The `react-ts-unittest-expert` agent is designed to help developers create comprehensive, maintainable unit tests for React and TypeScript components. It provides expert guidance and generates test cases that follow modern testing best practices using frameworks like Jest and Vitest with React Testing Library.
+The `react-ts-unittest-expert` agent is designed to help developers create comprehensive, maintainable unit tests for React and TypeScript components. It provides expert guidance and generates test cases that follow modern user-centric testing practices using Vitest and React Testing Library.
 
 ## Features
 
@@ -18,7 +18,7 @@ The `react-ts-unittest-expert` agent is designed to help developers create compr
   - Error states and edge cases
   - Async operations and loading states
 - **Best Practices**: Generates tests following React Testing Library best practices and user-centric testing patterns
-- **Framework Support**: Works with Jest, Vitest, and other popular JavaScript testing frameworks
+- **Project-Aware Guidance**: Adapts to the target project's existing test setup, helpers, and coverage policy
 - **Expert Guidance**: Provides recommendations for test structure, improvements, and testability concerns
 
 ## Installation
@@ -75,10 +75,10 @@ The agent specializes in:
 
 ## Recommended Testing Tools
 
-- **Framework**: Jest or Vitest
+- **Framework**: Vitest
 - **Testing Library**: @testing-library/react
 - **User Events**: @testing-library/user-event
-- **Mocking**: jest.mock(), vitest.mock(), or MSW (Mock Service Worker)
+- **Mocking**: vi.mock() or MSW (Mock Service Worker)
 - **Async Testing**: waitFor, findBy queries, act()
 
 ## Best Practices Followed
@@ -89,11 +89,12 @@ The agent specializes in:
 - **Accessibility**: Tests verify accessible markup and interactions
 - **DRY Principle**: Shared test utilities and fixtures to reduce duplication
 - **Performance**: Tests are written to be fast and reliable (avoid flakiness)
+- **Project Alignment**: Follow the target project's existing scripts, file layout, and coverage policy
 
 ## Requirements
 
 - A React and/or TypeScript project
-- Testing framework installed (Jest, Vitest, etc.)
+- Vitest selected or installed as the project's test runner
 - React Testing Library or similar testing utilities
 - GitHub Copilot CLI installed and configured
 
