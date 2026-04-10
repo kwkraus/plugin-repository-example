@@ -1,0 +1,26 @@
+{
+  "name": "maf-migration-assistant",
+  "version": "1.0.0",
+  "description": "Microsoft Agent Framework rc5 to 1.x GA migration agents and skills for C# and Python projects.",
+  "author": {
+    "name": "Kevin Kraus",
+    "email": "kevin.kraus@microsoft.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "microsoft",
+    "agent",
+    "framework",
+    "migration",
+    "assistant",
+    "rc5",
+    "1.x",
+    "ga",
+    "c#",
+    "python"
+  ],
+  "agents": "./agents",
+  "skills": [
+    "./skills"
+  ]
+}

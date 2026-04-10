@@ -20,6 +20,12 @@
       "description": "A specialized agent for generating unit tests for Express API endpoints",
       "version": "1.0.0",
       "source": "./plugins/expressapi-unittest-expert"
+    },
+    {
+      "name": "maf-migration-assistant",
+      "description": "Microsoft Agent Framework rc5 to 1.x GA migration agents and skills for C# and Python projects.",
+      "version": "1.0.0",
+      "source": "./plugins/maf-migration-assistant"
     }
   ]
 }
