@@ -1,11 +1,6 @@
 ---
 name: maf-fetch-docs
-description: >
-  Fetches live Microsoft Agent Framework documentation using Microsoft Learn MCP
-  as the primary source, with web fetch as fallback. Use this skill when the
-  static migration KB doesn't cover a question, when current package versions
-  are needed, or when official samples or release notes must be retrieved.
-  Invoke with /maf-fetch-docs or when live doc retrieval is needed.
+description: Fetches live Microsoft Agent Framework documentation using Microsoft Learn MCP as the primary source, with web fetch as fallback. Use this skill when the static migration KB doesn't cover a question, when current package versions are needed, or when official samples or release notes must be retrieved.
 ---
 
 # MAF Fetch Docs Skill

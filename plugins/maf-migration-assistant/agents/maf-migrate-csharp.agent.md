@@ -1,9 +1,6 @@
 ---
 name: MAF Migrate CSharp
-description: >
-  Migrates C# / .NET Microsoft Agent Framework projects from rc5 to 1.x GA.
-  Covers Foundry namespace changes, session API, credential patterns, package
-  updates, and MExt.AI version bumps. Requires rc5 or higher as starting point.
+description: Migrates C# / .NET Microsoft Agent Framework projects from rc5 to 1.x GA.  Covers Foundry namespace changes, session API, credential patterns, package updates, and MExt.AI version bumps. Requires rc5 or higher as starting point.
 ---
 
 # MAF Migrate - C# / .NET

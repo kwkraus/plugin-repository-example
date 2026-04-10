@@ -1,13 +1,9 @@
 ---
 name: maf-migration-kb
-description: >
-  Microsoft Agent Framework rc5 -> 1.0 breaking change catalog for C# and Python.
-  Use this skill when migrating MAF projects, looking up renamed types, fixing
-  build errors after upgrading packages, or understanding what changed between
-  rc5 and GA. Invoke with /maf-migration-kb or ask about MAF migration.
+description: Microsoft Agent Framework rc5 -> 1.0 breaking change catalog for C# and Python. Use this skill when migrating MAF projects, looking up renamed types, fixing build errors after upgrading packages, or understanding what changed between rc5 and GA.
 ---
 
-# MAF Migration Knowledge Base: rc5 -> 1.0
+# MAF Migration Knowledge Base: rc5 -> 1.x
 
 > **Scope:** User must be on rc5 or higher. If on rc4 or lower, direct them
 > to upgrade to rc5 first via the RC migration guide before continuing.
@@ -23,7 +19,7 @@ description: >
 
 ## 1. Package & Installation Changes (Both Languages)
 
-| Change | rc5 | 1.0 |
+| Change | rc5 | 1.x |
 |--------|-----|-----|
 | Core packages | Required `--pre` flag | Stable - no `--pre` needed |
 | Foundry package (Python) | `agent-framework-azure-ai` | `agent-framework-foundry` |
@@ -41,7 +37,7 @@ For package commands, prefer the latest stable `1.x` patch instead of assuming
 
 ### .NET
 
-| rc5 | 1.0 |
+| rc5 | 1.x |
 |-----|-----|
 | `Microsoft.Agents.AI.AzureAI` | `Microsoft.Agents.AI.Foundry` |
 | `ServiceStoredSimulatingChatClient` | `PerServiceCallChatHistoryPersistingChatClient` |
@@ -50,7 +46,7 @@ For package commands, prefer the latest stable `1.x` patch instead of assuming
 
 ### Python
 
-| rc5 | 1.0 |
+| rc5 | 1.x |
 |-----|-----|
 | `agent_framework_azure_ai` (package removed) | `agent_framework.foundry` |
 | `AzureAIAgentClient` / `AzureAIClient` | `FoundryChatClient` or `FoundryAgent` |
@@ -67,7 +63,7 @@ For package commands, prefer the latest stable `1.x` patch instead of assuming
 var thread = agent.GetNewThread();
 var result = await agent.RunAsync("Hello", thread: thread);
 
-// 1.0
+// 1.x
 var session = agent.CreateSession();
 var result = await agent.RunAsync("Hello", session: session);
 ```
@@ -78,7 +74,7 @@ var result = await agent.RunAsync("Hello", session: session);
 thread = agent.get_new_thread()
 result = await agent.run("Hello", thread=thread)
 
-# 1.0
+# 1.x
 session = await agent.create_session()
 result = await agent.run("Hello", session=session)
 ```
@@ -93,7 +89,7 @@ result = await agent.run("Hello", session=session)
 from agent_framework_azure_ai import get_entra_auth_token
 agent = AzureAIAgent(ad_token=get_entra_auth_token(), ad_token_provider=my_provider)
 
-# 1.0
+# 1.x
 from azure.identity import DefaultAzureCredential
 agent = AzureAIAgent(credential=DefaultAzureCredential())
 ```
@@ -103,7 +99,7 @@ agent = AzureAIAgent(credential=DefaultAzureCredential())
 // rc5
 var client = new AzureAIProjectClient(endpoint, apiKey);
 
-// 1.0
+// 1.x
 var client = new AIProjectClient(new Uri(endpoint), new DefaultAzureCredential());
 ```
 
@@ -123,7 +119,7 @@ generic OpenAI client construction and make provider routing explicit.
 var options = new ChatClientAgentOptions { Instructions = "..." };
 var agent = new ChatClientAgent(client, options);
 
-// 1.0
+// 1.x
 var agent = new ChatClientAgent(client, instructions: "...");
 ```
 
@@ -136,7 +132,7 @@ var agent = new ChatClientAgent(client, instructions: "...");
 async for chunk in agent.run_stream("Analyze this"):
     print(chunk, end="")
 
-# 1.0 - stream= flag on run()
+# 1.x - stream= flag on run()
 async for chunk in agent.run("Analyze this", stream=True):
     print(chunk, end="")
 ```
@@ -150,7 +146,7 @@ async for chunk in agent.run("Analyze this", stream=True):
 client = SomeClient(model_id="gpt-4o")
 client = AzureClient(deployment_name="gpt-4o")
 
-# 1.0 - unified everywhere
+# 1.x - unified everywhere
 client = OpenAIChatClient(model="gpt-4o")
 client = FoundryChatClient(model="gpt-4o", ...)
 ```
@@ -172,7 +168,7 @@ client = FoundryChatClient(model="gpt-4o", ...)
 # rc5
 msg = Message(role="user", text="Hello")
 
-# 1.0 - text= removed
+# 1.x - text= removed
 msg = Message(role="user", contents=["Hello"])
 ```
 
@@ -190,7 +186,7 @@ await workflow.run(
   user_preferences={"format": "markdown"},
 )
 
-# 1.0 - explicit buckets
+# 1.x - explicit buckets
 await workflow.run(
   "Draft the report",
   function_invocation_kwargs={
@@ -211,7 +207,7 @@ move runtime data into `function_invocation_kwargs` and `client_kwargs`.
 # rc5 / rc6 compatibility alias
 from agent_framework import BaseHistoryProvider
 
-# 1.0
+# 1.x
 from agent_framework import HistoryProvider
 ```
 
@@ -226,7 +222,7 @@ removed in the stable 1.0 release.
 <!-- rc5 -->
 <PackageReference Include="Microsoft.Extensions.AI" Version="9.*-preview.*" />
 
-<!-- 1.0 -->
+<!-- 1.x -->
 <PackageReference Include="Microsoft.Extensions.AI" Version="10.4.1" />
 ```
 

@@ -1,11 +1,6 @@
 ---
 name: MAF Migrate Python
-description: >
-    Migrates Python Microsoft Agent Framework projects from rc5 to 1.x GA.
-  Covers Foundry package split, namespace changes, credential patterns,
-  session API, streaming API, model parameter unification, Azure routing
-  changes, and message construction updates. Requires rc5 or higher as
-  starting point.
+description: Migrates Python Microsoft Agent Framework projects from rc5 to 1.x GA.  Covers Foundry package split, namespace changes, credential patterns, session API, streaming API, model parameter unification, Azure routing changes, and message construction updates. Requires rc5 or higher as starting point.
 ---
 
 # MAF Migrate - Python
